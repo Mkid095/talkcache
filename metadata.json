@@ -1,0 +1,5 @@
+{
+  "name": "Talk Cache",
+  "description": "A professional real-time chat application supporting public chat, multiple rooms, private messaging, and message persistence.",
+  "requestFramePermissions": []
+}
