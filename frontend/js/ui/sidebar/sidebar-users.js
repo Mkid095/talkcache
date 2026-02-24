@@ -32,9 +32,10 @@ function initElements() {
  * Render the list of online users
  */
 function renderUsers() {
+  // Query DOM fresh each time (not cached)
+  const list = document.getElementById('users-list');
+  const countElement = document.getElementById('user-count');
   const users = getUsers();
-  const list = elements.usersList;
-  const countElement = elements.userCount;
   const privateRecipient = getPrivateRecipient();
 
   if (!list) return;

@@ -16,32 +16,13 @@ let elements = {};
 let callbacks = {};
 
 /**
- * Get DOM element references
- */
-function initElements() {
-  elements = {
-    roomsList: $('#rooms-list')
-  };
-
-  console.log('[SidebarRooms] initElements:', {
-    roomsList: elements.roomsList,
-    found: !!elements.roomsList
-  });
-}
-
-/**
  * Render the list of rooms
  * @param {string} currentRoom - Currently active room
  */
 function renderRooms(currentRoom = getCurrentRoom()) {
+  // Query DOM fresh each time (not cached)
+  const list = document.getElementById('rooms-list');
   const rooms = getRooms();
-  const list = elements.roomsList;
-
-  console.log('[SidebarRooms] renderRooms called:', {
-    rooms,
-    roomsList: list,
-    hasRoomsList: !!list
-  });
 
   if (!list) {
     console.warn('[SidebarRooms] #rooms-list element not found!');
