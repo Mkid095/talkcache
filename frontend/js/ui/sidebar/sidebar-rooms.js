@@ -16,6 +16,15 @@ let elements = {};
 let callbacks = {};
 
 /**
+ * Get DOM element references
+ */
+function initElements() {
+  elements = {
+    roomsList: document.getElementById('rooms-list')
+  };
+}
+
+/**
  * Render the list of rooms
  * @param {string} currentRoom - Currently active room
  */
