@@ -1,0 +1,58 @@
+<!--
+  CHAT AREA COMPONENT
+  Feature: Real-time Messaging
+  Location: frontend/components/chat-area.html
+  Description: Main chat interface with header, messages, and input
+-->
+
+<main class="chat-area">
+  <!-- Chat Header -->
+  <header class="chat-header">
+    <div class="chat-header-content">
+      <svg class="header-icon hash-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="9" x2="20" y2="9"></line>
+        <line x1="4" y1="15" x2="20" y2="15"></line>
+        <line x1="10" y1="3" x2="8" y2="21"></line>
+        <line x1="16" y1="3" x2="14" y2="21"></line>
+      </svg>
+      <svg class="header-icon user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <h2 id="chat-title" class="chat-title">general</h2>
+      <span id="private-badge" class="private-badge hidden">PRIVATE</span>
+    </div>
+  </header>
+
+  <!-- Messages Container -->
+  <div id="messages-container" class="messages-container">
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state">
+      No messages yet. Start the conversation!
+    </div>
+    <!-- Messages List -->
+    <ul id="messages-list" class="messages-list">
+      <!-- Messages will be populated by JavaScript -->
+    </ul>
+  </div>
+
+  <!-- Message Input Area -->
+  <div class="message-input-area">
+    <form id="message-form" class="message-form">
+      <input
+        id="message-input"
+        type="text"
+        class="message-input"
+        placeholder="Message #general..."
+        autocomplete="off"
+        maxlength="1000"
+      >
+      <button type="submit" id="send-btn" class="send-btn" disabled title="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </div>
+</main>

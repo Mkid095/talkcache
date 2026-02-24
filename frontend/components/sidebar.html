@@ -1,0 +1,87 @@
+<!--
+  SIDEBAR COMPONENT
+  Feature: Room Navigation & User List
+  Location: frontend/components/sidebar.html
+  Description: Shows available rooms and online users
+-->
+
+<aside class="sidebar">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <div class="app-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </div>
+    <div class="user-info">
+      <div class="app-name">Talk Cache</div>
+      <div class="current-user">
+        <span class="online-indicator"></span>
+        <span id="display-username">Guest</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar Content -->
+  <div class="sidebar-content">
+    <!-- Rooms Section -->
+    <section class="sidebar-section">
+      <h3 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="9" x2="20" y2="9"></line>
+          <line x1="4" y1="15" x2="20" y2="15"></line>
+          <line x1="10" y1="3" x2="8" y2="21"></line>
+          <line x1="16" y1="3" x2="14" y2="21"></line>
+        </svg>
+        ROOMS
+      </h3>
+      <ul id="rooms-list" class="rooms-list">
+        <!-- Rooms will be populated by JavaScript -->
+        <li>
+          <button class="room-btn active" data-room="general">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="4" y1="9" x2="20" y2="9"></line>
+              <line x1="4" y1="15" x2="20" y2="15"></line>
+              <line x1="10" y1="3" x2="8" y2="21"></line>
+              <line x1="16" y1="3" x2="14" y2="21"></line>
+            </svg>
+            general
+          </button>
+        </li>
+      </ul>
+      <!-- Create Room Form -->
+      <form id="create-room-form" class="create-room-form">
+        <input
+          id="new-room-input"
+          type="text"
+          class="room-input"
+          placeholder="New room..."
+          maxlength="50"
+          autocomplete="off"
+        >
+        <button type="submit" class="btn-icon-small" disabled title="Create room">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+    <!-- Users Section -->
+    <section class="sidebar-section">
+      <h3 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        ONLINE USERS (<span id="user-count" class="user-count">0</span>)
+      </h3>
+      <ul id="users-list" class="users-list">
+        <!-- Users will be populated by JavaScript -->
+      </ul>
+    </section>
+  </div>
+</aside>

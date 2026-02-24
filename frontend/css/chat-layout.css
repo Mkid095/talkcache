@@ -1,0 +1,88 @@
+/**
+ * CHAT AREA LAYOUT STYLES
+ * Feature: Main Chat Interface
+ * Fixed header and scrollable content
+ */
+
+/* =============================================
+   CHAT INTERFACE CONTAINER
+============================================= */
+
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-bg);
+}
+
+/* Desktop: side-by-side layout */
+@media (min-width: 768px) {
+  .chat-interface {
+    flex-direction: row;
+  }
+}
+
+/* =============================================
+   CHAT AREA CONTAINER
+   Takes remaining space
+============================================= */
+
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  overflow: hidden;
+  min-height: 0; /* Important for flex child scrolling */
+}
+
+/* =============================================
+   CHAT HEADER
+   Fixed at top
+============================================= */
+
+.chat-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.chat-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.header-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-light);
+}
+
+.chat-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+/* Private chat badge - yellow */
+.private-badge {
+  font-size: 0.75rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-yellow);
+  color: var(--color-blue);
+  border-radius: 50%;
+  font-weight: 500;
+}
+
+/* Hidden class */
+.hidden {
+  display: none !important;
+}

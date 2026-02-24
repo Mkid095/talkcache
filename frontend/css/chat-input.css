@@ -1,0 +1,97 @@
+/**
+ * CHAT INPUT AREA STYLES
+ * Feature: Message Sending
+ */
+
+/* =============================================
+   INPUT AREA
+   Fixed at bottom
+============================================= */
+
+.message-input-area {
+  padding: var(--spacing-md);
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.message-form {
+  display: flex;
+  gap: var(--spacing-sm);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .message-form {
+    max-width: 800px;
+  }
+}
+
+/* =============================================
+   MESSAGE INPUT
+============================================= */
+
+.message-input {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.875rem;
+  background-color: var(--color-gray-light);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+}
+
+.message-input:focus {
+  outline: none;
+  background-color: var(--color-white);
+  border-color: var(--color-blue);
+}
+
+.message-input::placeholder {
+  color: var(--color-text-light);
+}
+
+/* =============================================
+   SEND BUTTON
+   Blue color
+============================================= */
+
+.send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.send-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.send-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* =============================================
+   RESPONSIVE
+============================================= */
+
+@media (max-width: 480px) {
+  .message-input-area {
+    padding: var(--spacing-sm);
+  }
+}
