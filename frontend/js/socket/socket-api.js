@@ -4,6 +4,7 @@
  * File: frontend/js/socket/socket-api.js
  */
 
+import { ensureConnected } from './socket-connection.js';
 import { emit } from './socket-events.js';
 
 /**
@@ -11,7 +12,12 @@ import { emit } from './socket-events.js';
  * @param {Object} credentials - Username and password
  */
 function joinChat(credentials) {
-  emit('join', credentials);
+  const socket = ensureConnected();
+  if (socket.connected) {
+    emit('join', credentials);
+  } else {
+    console.error('[Socket] Cannot join: not connected');
+  }
 }
 
 /**
@@ -19,7 +25,10 @@ function joinChat(credentials) {
  * @param {string} room - Room name
  */
 function joinRoom(room) {
-  emit('join_room', room);
+  const socket = ensureConnected();
+  if (socket.connected) {
+    emit('join_room', room);
+  }
 }
 
 /**
@@ -28,7 +37,10 @@ function joinRoom(room) {
  * @param {string} text - Message text
  */
 function sendMessage(room, text) {
-  emit('send_message', { room, text });
+  const socket = ensureConnected();
+  if (socket.connected) {
+    emit('send_message', { room, text });
+  }
 }
 
 /**
@@ -37,7 +49,10 @@ function sendMessage(room, text) {
  * @param {string} text - Message text
  */
 function sendPrivateMessage(recipientId, text) {
-  emit('send_private_message', { recipientId, text });
+  const socket = ensureConnected();
+  if (socket.connected) {
+    emit('send_private_message', { recipientId, text });
+  }
 }
 
 /**
@@ -45,7 +60,10 @@ function sendPrivateMessage(recipientId, text) {
  * @param {string} roomName - Room name to create
  */
 function createRoom(roomName) {
-  emit('create_room', roomName);
+  const socket = ensureConnected();
+  if (socket.connected) {
+    emit('create_room', roomName);
+  }
 }
 
 export {

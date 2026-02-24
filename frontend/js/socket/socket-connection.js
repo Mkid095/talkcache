@@ -15,18 +15,33 @@ let socket = null;
 function initSocket() {
   socket = io({
     autoConnect: true,
-    reconnection: true
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionAttempts: 5
   });
 
   console.log('[Socket] Connecting...');
 
   socket.on('connect', () => {
     console.log('[Socket] Connected! ID:', socket.id);
+    setSocketInstance(socket);
+  });
 
-    // Notify socket-events module of connection
-    if (socket.id) {
-      setSocketInstance(socket);
-    }
+  socket.on('disconnect', () => {
+    console.log('[Socket] Disconnected');
+  });
+
+  socket.on('reconnect', (attemptNumber) => {
+    console.log('[Socket] Reconnected! ID:', socket.id, 'Attempt:', attemptNumber);
+    setSocketInstance(socket);
+  });
+
+  socket.on('reconnect_attempt', (attemptNumber) => {
+    console.log('[Socket] Reconnecting... Attempt:', attemptNumber);
+  });
+
+  socket.on('reconnect_failed', () => {
+    console.error('[Socket] Reconnection failed');
   });
 
   return socket;
@@ -49,18 +64,38 @@ function isConnected() {
 }
 
 /**
- * Disconnect from server
+ * Ensure socket is connected, reconnect if needed
+ * @returns {Object} Socket instance
+ */
+function ensureConnected() {
+  if (!socket) {
+    console.log('[Socket] Creating new socket connection');
+    return initSocket();
+  }
+
+  if (!socket.connected) {
+    console.log('[Socket] Reconnecting socket...');
+    socket.connect();
+  }
+
+  return socket;
+}
+
+/**
+ * Disconnect from server and clear socket
  */
 function disconnect() {
   if (socket) {
     socket.disconnect();
     socket = null;
   }
+  setSocketInstance(null);
 }
 
 export {
   initSocket,
   getSocket,
   isConnected,
+  ensureConnected,
   disconnect
 };

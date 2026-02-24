@@ -8,6 +8,7 @@ import { $, on } from '../../utils/helpers.js';
 import { getUsername, getTotalUnreadCount } from '../../state.js';
 import {
   renderModalRooms,
+  addModalRoomToList,
   setupRoomsEventDelegation,
   setupCreateRoomForm
 } from './mobile-rooms-modal.js';
@@ -155,6 +156,7 @@ function initMobileNav(options = {}) {
 export {
   initMobileNav,
   renderModalRooms,
+  addModalRoomToList,
   renderModalUsers,
   openRoomsModal,
   openUsersModal,

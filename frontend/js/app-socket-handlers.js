@@ -6,6 +6,7 @@
 
 import {
   getUsername,
+  getSocketId,
   setMessages,
   setUsers,
   setRooms,
@@ -97,16 +98,36 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
 
       const privateRecipient = getPrivateRecipient();
       const currentRoom = getCurrentRoom();
+      const mySocketId = getSocketId();
+
+      // Debug logging for private messages
+      if (message.isPrivate) {
+        console.log('[App] Private message received:', {
+          senderId: message.senderId,
+          recipientId: message.recipientId,
+          mySocketId: mySocketId,
+          currentRecipient: privateRecipient?.id,
+          text: message.text
+        });
+      }
+
+      // Display if: room message matches current room, OR
+      // private message is from/to the current private chat recipient
       const shouldDisplay = message.isPrivate
-        ? (privateRecipient && privateRecipient.id === message.senderId)
+        ? (privateRecipient && (
+            privateRecipient.id === message.senderId ||   // Message from recipient
+            privateRecipient.id === message.recipientId   // Message to recipient (sent by me)
+          ))
         : (message.room === currentRoom);
+
+      console.log('[App] Should display message?', shouldDisplay);
 
       if (shouldDisplay) {
         addMessageToChat(message);
       }
 
-      // Track unread private messages
-      if (message.isPrivate && message.senderId !== getUsername()) {
+      // Track unread private messages (only for messages FROM others, not sent by me)
+      if (message.isPrivate && message.senderId !== getSocketId()) {
         if (!privateRecipient || privateRecipient.id !== message.senderId) {
           incrementUnread(message.senderId);
           renderUsers();
@@ -115,8 +136,8 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
         }
       }
 
-      // Track unread room messages
-      if (!message.isPrivate && message.room) {
+      // Track unread room messages (only for messages FROM others, not sent by me)
+      if (!message.isPrivate && message.room && message.senderId !== getSocketId()) {
         if (currentRoom !== message.room) {
           incrementRoomUnread(message.room);
           renderRooms();
@@ -134,7 +155,15 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
     // Rooms list updated
     onRoomsList: (rooms) => {
       console.log('[App] Rooms list updated:', rooms);
-      setRooms(rooms);
+
+      // Ensure "general" room is always in the list (default room)
+      let updatedRooms = [...rooms];
+      if (!updatedRooms.includes('general')) {
+        updatedRooms.push('general');
+        console.log('[App] Added default "general" room');
+      }
+
+      setRooms(updatedRooms);
       renderRooms();
       renderModalRooms();
     },

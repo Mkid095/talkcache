@@ -8,6 +8,7 @@ import {
   initSocket,
   getSocket,
   isConnected,
+  ensureConnected,
   disconnect
 } from './socket/socket-connection.js';
 
@@ -29,6 +30,7 @@ export {
   initSocket,
   getSocket,
   isConnected,
+  ensureConnected,
   disconnect,
   setupChatHandlers,
   joinChat,

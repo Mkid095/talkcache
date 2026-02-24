@@ -116,6 +116,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
+  overflow: visible;
 }
 
 .modal-user-btn:hover:not(:disabled) {
@@ -143,6 +144,7 @@
   justify-content: center;
   flex-shrink: 0;
   position: relative;
+  overflow: visible;
 }
 
 .modal-user-icon-wrapper svg {
@@ -181,6 +183,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 @media (min-width: 768px) {

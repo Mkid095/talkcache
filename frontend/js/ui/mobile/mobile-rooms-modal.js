@@ -9,7 +9,8 @@ import {
   getRooms,
   getCurrentRoom,
   getPrivateRecipient,
-  roomExists
+  roomExists,
+  getRoomUnread
 } from '../../state.js';
 
 /**
@@ -39,15 +40,19 @@ function renderModalRooms(elements = null) {
     li.className = 'modal-room-item';
 
     const isActive = !privateRecipient && room === currentRoom;
+    const unreadCount = getRoomUnread(room);
 
     li.innerHTML = `
       <button class="modal-room-btn ${isActive ? 'active' : ''}" data-room="${escapeHtml(room)}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="4" y1="9" x2="20" y2="9"></line>
-          <line x1="4" y1="15" x2="20" y2="15"></line>
-          <line x1="10" y1="3" x2="8" y2="21"></line>
-          <line x1="16" y1="3" x2="14" y2="21"></line>
-        </svg>
+        <div class="modal-room-icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="9" x2="20" y2="9"></line>
+            <line x1="4" y1="15" x2="20" y2="15"></line>
+            <line x1="10" y1="3" x2="8" y2="21"></line>
+            <line x1="16" y1="3" x2="14" y2="21"></line>
+          </svg>
+          ${unreadCount > 0 ? `<span class="modal-room-unread-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
+        </div>
         <span class="modal-room-name">${escapeHtml(room)}</span>
         ${isActive ? '<span class="modal-room-indicator"></span>' : ''}
       </button>
@@ -55,6 +60,47 @@ function renderModalRooms(elements = null) {
 
     list.appendChild(li);
   });
+}
+
+/**
+ * Add a single room to the modal list
+ * @param {string} room - Room name
+ * @param {Object} elements - Optional DOM elements object
+ */
+function addModalRoomToList(room, elements = null) {
+  if (!elements) {
+    elements = {
+      modalRoomsList: document.getElementById('modal-rooms-list')
+    };
+  }
+
+  const list = elements.modalRoomsList;
+  if (!list) return;
+
+  const currentRoom = getCurrentRoom();
+  const privateRecipient = getPrivateRecipient();
+  const isActive = !privateRecipient && room === currentRoom;
+  const unreadCount = getRoomUnread(room);
+
+  const li = document.createElement('li');
+  li.className = 'modal-room-item';
+  li.innerHTML = `
+    <button class="modal-room-btn ${isActive ? 'active' : ''}" data-room="${escapeHtml(room)}">
+      <div class="modal-room-icon-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="9" x2="20" y2="9"></line>
+          <line x1="4" y1="15" x2="20" y2="15"></line>
+          <line x1="10" y1="3" x2="8" y2="21"></line>
+          <line x1="16" y1="3" x2="14" y2="21"></line>
+        </svg>
+        ${unreadCount > 0 ? `<span class="modal-room-unread-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
+      </div>
+      <span class="modal-room-name">${escapeHtml(room)}</span>
+      ${isActive ? '<span class="modal-room-indicator"></span>' : ''}
+    </button>
+  `;
+
+  list.appendChild(li);
 }
 
 // =============================================
@@ -175,6 +221,7 @@ function setupCreateRoomForm(elements, callbacks, closeRoomsModal) {
 
 export {
   renderModalRooms,
+  addModalRoomToList,
   getModalRoomInput,
   clearModalRoomInput,
   updateModalCreateRoomButton,

@@ -12,7 +12,8 @@ import {
   getUsers,
   isInPrivateChat,
   clearUnread,
-  clearRoomUnread
+  clearRoomUnread,
+  addRoom
 } from '../state.js';
 
 import {
@@ -21,13 +22,17 @@ import {
 
 import {
   updateChatHeader,
-  updateActiveRoom
+  updateActiveRoom,
+  renderRooms,
+  renderUsers,
+  addRoomToList
 } from '../ui/sidebar.js';
 
 import {
   renderModalRooms,
   renderModalUsers,
-  updateUsersBadge
+  updateUsersBadge,
+  addModalRoomToList
 } from '../ui/mobile/mobile-nav.js';
 
 import {
@@ -53,6 +58,11 @@ function handleRoomSelect(room) {
 
   // Update state
   setCurrentRoom(room);
+  addRoom(room);  // Add room to state immediately
+
+  // Add room to UI immediately
+  addRoomToList(room);
+  addModalRoomToList(room);
 
   // Join room via socket
   joinRoom(room);
@@ -104,9 +114,22 @@ function handleUserSelect(userId) {
   const container = document.getElementById('messages-container');
   updateRoomBackground(container, '', selectedUser);
   updateActiveRoom('');
-  renderUsers();  // Update to remove badge
-  renderModalUsers();  // Update to remove badge
-  updateUsersBadge();  // Update mobile nav badge
+
+  // Update user lists to remove badges
+  const sidebarUsers = typeof renderUsers === 'function' ? renderUsers : null;
+  if (sidebarUsers) {
+    sidebarUsers();
+  }
+
+  const modalUsers = typeof renderModalUsers === 'function' ? renderModalUsers : null;
+  if (modalUsers) {
+    modalUsers();
+  }
+
+  const usersBadge = typeof updateUsersBadge === 'function' ? updateUsersBadge : null;
+  if (usersBadge) {
+    usersBadge();
+  }
 }
 
 export {
