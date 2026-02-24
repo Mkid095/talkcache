@@ -113,7 +113,8 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
       const shouldDisplay = message.isPrivate
         ? (privateRecipient && (
             privateRecipient.id === message.senderId ||   // Message from recipient
-            privateRecipient.id === message.recipientId   // Message to recipient (sent by me)
+            message.recipientId === privateRecipient.id || // I sent to recipient
+            (message.senderId === getSocketId() && message.recipientId === privateRecipient.id) // I sent it
           ))
         : (message.room === currentRoom);
 

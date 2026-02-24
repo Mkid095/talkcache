@@ -4,6 +4,8 @@
  * File: frontend/js/state.js
  */
 
+import { clearAllUnread } from './state-unread.js';
+
 const state = {
   username: '',
   socketId: null,
@@ -136,6 +138,21 @@ function roomExists(room) {
   return state.rooms.includes(room);
 }
 
+/**
+ * Reset all state to initial values (for logout)
+ */
+function resetState() {
+  state.username = '';
+  state.socketId = null;
+  state.isJoined = false;
+  state.currentRoom = null;
+  state.privateRecipient = null;
+  state.messages = [];
+  state.users = [];
+  state.rooms = [];
+  clearAllUnread();
+}
+
 // Re-export unread functions for backward compatibility
 export {
   getUnreadCount,
@@ -174,5 +191,6 @@ export {
   setRooms,
   addRoom,
   isMe,
-  roomExists
+  roomExists,
+  resetState
 };

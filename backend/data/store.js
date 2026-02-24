@@ -78,9 +78,9 @@ async function initDataStore() {
     try {
       await fs.access(ROOMS_FILE);
     } catch {
-      // File doesn't exist, create it empty (no default room)
-      await fs.writeFile(ROOMS_FILE, JSON.stringify([], null, 2), "utf-8");
-      console.log("Created rooms file");
+      // File doesn't exist, create it with default "general" room
+      await fs.writeFile(ROOMS_FILE, JSON.stringify(["general"], null, 2), "utf-8");
+      console.log("Created rooms file with default 'general' room");
     }
   } catch (error) {
     console.error("Error initializing data store:", error);
