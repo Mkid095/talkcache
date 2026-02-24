@@ -277,7 +277,7 @@ talkcache/
 
 ## Assignment Requirements Mapping
 
-### Task 1: Server Setup and Structure (10 marks) ✅
+### Task 1: Server Setup and Structure (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -288,7 +288,7 @@ talkcache/
 | Listens on port 3000 | Configured in server.js |
 | Error handling | Try/catch blocks in all async functions |
 
-### Task 2: Real-Time Messaging (20 marks) ✅
+### Task 2: Real-Time Messaging (20 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -300,7 +300,7 @@ talkcache/
 | Message list display | Messages render in scrollable container |
 | Clear message distinction | Visual separation between messages with timestamps |
 
-### Task 3: Modern HTML Layout (10 marks) ✅
+### Task 3: Modern HTML Layout (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -311,7 +311,7 @@ talkcache/
 | Color contrast | Subtle professional colors, WCAG compliant |
 | Readable fonts | System font stack, proper sizing |
 
-### Task 4: Code Quality and Comments (10 marks) ✅
+### Task 4: Code Quality and Comments (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -320,7 +320,7 @@ talkcache/
 | Inline comments | JSDoc-style comments throughout |
 | Explanatory comments | "Why" documented, not just "what" |
 
-### Task 5: Multiple Chat Rooms (10 marks) ✅
+### Task 5: Multiple Chat Rooms (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -330,7 +330,7 @@ talkcache/
 | Clear interface | Room list with active indicators and unread badges |
 | Visual indication | Active room highlighting |
 
-### Task 6: Message Persistence (10 marks) ✅
+### Task 6: Message Persistence (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -339,7 +339,7 @@ talkcache/
 | Load on join | message_history event sends history |
 | Error handling | Try/catch around file operations |
 
-### Task 7: Private Messaging (10 marks) ✅
+### Task 7: Private Messaging (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -348,7 +348,7 @@ talkcache/
 | Visual distinction | Solid backgrounds (blue sent, orange received) |
 | Unique presentation | Different from room messages |
 
-### Task 8: README (10 marks) ✅
+### Task 8: README (10 marks)
 
 | Requirement | Implementation |
 |-------------|----------------|
@@ -358,7 +358,7 @@ talkcache/
 | Usage instructions | Complete usage guide |
 | Testing suggestions | Multiple browser tabs tip |
 
-### Task 9: Reflective Report (10 marks) ✅
+### Task 9: Reflective Report (10 marks)
 
 See [REFLECTIVE_REPORT.md](REFLECTIVE_REPORT.md) for detailed reflections.
 
