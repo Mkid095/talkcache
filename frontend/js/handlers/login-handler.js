@@ -4,12 +4,11 @@
  * File: frontend/js/handlers/login-handler.js
  */
 
-import { getUsername, setUsername, setJoined, setSocketId, getSocketId } from '../state.js';
+import { getUsername, setUsername, setJoined, setSocketId, getSocketId, setCurrentRoom, getCurrentRoom, addRoom } from '../state.js';
 import { saveUser } from '../ui/login.js';
-import { joinChat } from '../socket-client.js';
+import { joinChat, joinRoom } from '../socket-client.js';
 import { goToChat } from '../router.js';
 import { updateMobileUsername } from '../ui/mobile/mobile-nav.js';
-import { handleRoomSelect } from './navigation-handler.js';
 
 /**
  * Handle login attempt with credentials
@@ -43,15 +42,25 @@ function handleUserJoin(data) {
   // Update mobile header username
   updateMobileUsername();
 
-  // Join the default "general" room
-  handleRoomSelect('general');
-  console.log('[App] Auto-joining default room: general');
-
-  // Navigate to chat route
+  // Navigate to chat route FIRST
   goToChat();
+
+  // Set current room to general and add to state
+  const currentRoom = getCurrentRoom();
+  if (!currentRoom) {
+    console.log('[App] Setting default room: general');
+    setCurrentRoom('general');
+    addRoom('general');
+  }
+
+  // Join the general room via socket
+  joinRoom('general');
 }
 
 export {
   handleLoginAttempt,
   handleUserJoin
 };
+
+// Import renderMessages at the bottom to avoid circular dependency
+import { renderMessages } from '../ui/chat.js';

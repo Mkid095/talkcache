@@ -14,7 +14,8 @@ import {
   getPrivateRecipient,
   getCurrentRoom,
   incrementUnread,
-  incrementRoomUnread
+  incrementRoomUnread,
+  setCurrentRoom
 } from './state.js';
 
 import {
@@ -86,7 +87,17 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
 
     // Message history loaded
     onMessageHistory: (messages) => {
+      console.log('[App] Loading', messages.length, 'messages from history');
+
       setMessages(messages);
+
+      // If no current room is set, default to "general"
+      const currentRoom = getCurrentRoom();
+      if (!currentRoom) {
+        console.log('[App] No current room set, defaulting to "general"');
+        setCurrentRoom('general');
+      }
+
       renderRooms();
       renderModalRooms();
       renderMessages();

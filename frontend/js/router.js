@@ -46,11 +46,14 @@ let currentRoute = ROUTES.LOGIN;
 function updateScreen() {
   initElements();
 
-  const isLoggedIn = hasJoined() && getUsername();
-  const shouldShowChat = isLoggedIn || currentRoute === ROUTES.CHAT;
+  const isLoggedIn = hasJoined();
+  const savedUser = getSavedUser();
+  const hasCredentials = savedUser && savedUser.username;
+
+  const shouldShowChat = (isLoggedIn && hasCredentials) || (currentRoute === ROUTES.CHAT && hasCredentials);
 
   if (elements.loginScreen && elements.chatInterface) {
-    if (shouldShowChat && isLoggedIn) {
+    if (shouldShowChat && hasCredentials) {
       elements.loginScreen.classList.add('hidden');
       elements.chatInterface.classList.remove('hidden');
     } else {
@@ -84,11 +87,13 @@ function initRouter(options = {}) {
     updateScreen();
   });
 
-  // Check for saved credentials
+  // Check for saved credentials BEFORE anything else
   const savedUser = getSavedUser();
 
   if (savedUser && savedUser.username && savedUser.password) {
-    // Has saved credentials - restore state
+    console.log('[Router] Found saved credentials:', savedUser.username);
+
+    // Restore state from saved credentials FIRST
     setJoined(true);
     setUsername(savedUser.username);
 
@@ -96,14 +101,20 @@ function initRouter(options = {}) {
     if (currentRoute === ROUTES.LOGIN) {
       navigate(ROUTES.CHAT);
     } else {
+      // Already on chat route, just update screen
       updateScreen();
     }
 
     // Trigger auto-login callback to reconnect with server
+    // This should happen AFTER the UI is showing chat
     if (options.onAutoLogin) {
-      options.onAutoLogin(savedUser);
+      // Small delay to ensure UI is ready
+      setTimeout(() => {
+        options.onAutoLogin(savedUser);
+      }, 50);
     }
   } else {
+    console.log('[Router] No saved credentials found');
     // No saved credentials - ensure login screen is shown
     if (currentRoute === ROUTES.CHAT) {
       navigate(ROUTES.LOGIN);
