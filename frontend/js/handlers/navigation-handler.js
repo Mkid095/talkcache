@@ -10,7 +10,9 @@ import {
   setPrivateRecipient,
   setCurrentRoom,
   getUsers,
-  isInPrivateChat
+  isInPrivateChat,
+  clearUnread,
+  clearRoomUnread
 } from '../state.js';
 
 import {
@@ -24,8 +26,9 @@ import {
 
 import {
   renderModalRooms,
-  renderModalUsers
-} from '../ui/mobile-nav.js';
+  renderModalUsers,
+  updateUsersBadge
+} from '../ui/mobile/mobile-nav.js';
 
 import {
   updateInputPlaceholder,
@@ -45,6 +48,9 @@ function handleRoomSelect(room) {
     setPrivateRecipient(null);
   }
 
+  // Clear unread for this room when joining
+  clearRoomUnread(room);
+
   // Update state
   setCurrentRoom(room);
 
@@ -58,6 +64,7 @@ function handleRoomSelect(room) {
   const container = document.getElementById('messages-container');
   updateRoomBackground(container, room);
   updateActiveRoom(room);
+  renderRooms();
   renderModalRooms();
 }
 
@@ -84,6 +91,9 @@ function handleUserSelect(userId) {
 
   console.log('[App] Starting private chat with:', selectedUser.name);
 
+  // Clear unread count for this user
+  clearUnread(userId);
+
   // Update state
   setPrivateRecipient(selectedUser);
 
@@ -94,7 +104,9 @@ function handleUserSelect(userId) {
   const container = document.getElementById('messages-container');
   updateRoomBackground(container, '', selectedUser);
   updateActiveRoom('');
-  renderModalUsers();
+  renderUsers();  // Update to remove badge
+  renderModalUsers();  // Update to remove badge
+  updateUsersBadge();  // Update mobile nav badge
 }
 
 export {

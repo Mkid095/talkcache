@@ -72,14 +72,16 @@
   color: var(--color-text-dark);
 }
 
-/* Private chat badge - yellow */
+/* Private chat badge - professional design */
 .private-badge {
-  font-size: 0.75rem;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background-color: var(--color-yellow);
-  color: var(--color-blue);
-  border-radius: 50%;
-  font-weight: 500;
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  background-color: #f97316;
+  color: #ffffff;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 /* Hidden class */

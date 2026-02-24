@@ -1,62 +1,20 @@
 /**
  * LOGIN SCREEN
  * Handles the username and password input
+ * File: frontend/js/ui/login.js
  */
 
-// Import helper functions
 import { $, on, escapeHtml, isValidUsername } from '../utils/helpers.js';
 import { setUsername, setJoined } from '../state.js';
+import {
+  getSavedUser,
+  saveUser,
+  clearSavedUser,
+  hasSavedUser
+} from './login-storage.js';
 
 // DOM elements (cached for performance)
 let elements = {};
-
-// Local storage key for remembering user
-const STORAGE_KEY = 'talkcache_user';
-
-/**
- * Get saved user credentials from localStorage
- * @returns {Object|null} Saved user data or null
- */
-function getSavedUser() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Save user credentials to localStorage
- * @param {string} username - Username to save
- * @param {string} password - Password to save
- */
-function saveUser(username, password) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ username, password }));
-  } catch (error) {
-    console.error('Error saving user:', error);
-  }
-}
-
-/**
- * Clear saved user from localStorage
- */
-function clearSavedUser() {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (error) {
-    console.error('Error clearing user:', error);
-  }
-}
-
-/**
- * Check if user has saved credentials
- * @returns {boolean} True if user is saved
- */
-function hasSavedUser() {
-  return !!getSavedUser();
-}
 
 /**
  * Get references to DOM elements
@@ -72,7 +30,6 @@ function initElements() {
     displayUsername: $('#display-username')
   };
 
-  // Debug: Check if all elements are found
   console.log('[Login] Elements found:', {
     loginScreen: !!elements.loginScreen,
     chatInterface: !!elements.chatInterface,
@@ -126,7 +83,6 @@ function validateLoginInput() {
     return false;
   }
 
-  // Password must be at least 1 character, max 50
   if (password.length < 1 || password.length > 50) {
     return false;
   }
@@ -153,7 +109,6 @@ function handleLoginSubmit(onJoin) {
     event.preventDefault();
     console.log('[Login] Form submitted!');
 
-    // Validate
     if (!validateLoginInput()) {
       console.log('[Login] Validation failed');
       return;
@@ -164,7 +119,6 @@ function handleLoginSubmit(onJoin) {
 
     console.log('[Login] Username:', username);
 
-    // Call the join callback with credentials
     if (typeof onJoin === 'function') {
       console.log('[Login] Calling onJoin callback');
       onJoin({ username, password });
@@ -195,12 +149,11 @@ function initLogin(onJoin) {
     on(elements.usernameInput, 'input', updateJoinButtonState);
   }
 
-  // Update button when password changes
   if (elements.passwordInput) {
     on(elements.passwordInput, 'input', updateJoinButtonState);
   }
 
-  // Check for saved user and auto-fill both username and password
+  // Check for saved user and auto-fill
   const savedUser = getSavedUser();
   if (savedUser && savedUser.username && savedUser.password) {
     if (elements.usernameInput) {
@@ -210,10 +163,8 @@ function initLogin(onJoin) {
       elements.passwordInput.value = savedUser.password;
     }
     updateJoinButtonState();
-    // Button is now enabled, ready to auto-login
     return { autoLogin: true, credentials: savedUser };
   } else if (savedUser && savedUser.username) {
-    // Only username saved, not password
     if (elements.usernameInput) {
       elements.usernameInput.value = savedUser.username;
     }
@@ -223,14 +174,12 @@ function initLogin(onJoin) {
     elements.usernameInput?.focus();
   }
 
-  // Start with button disabled
   updateJoinButtonState();
   return { autoLogin: false };
 
   console.log('[Login] Ready');
 }
 
-// Export functions
 export {
   initLogin,
   hideLoginScreen,

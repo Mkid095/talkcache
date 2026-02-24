@@ -20,6 +20,10 @@ import {
 } from './sidebar/sidebar-rooms.js';
 
 import {
+  initCreateRoomForm
+} from './sidebar/sidebar-rooms-form.js';
+
+import {
   initUsers,
   renderUsers
 } from './sidebar/sidebar-users.js';
@@ -100,7 +104,10 @@ function initSidebar(options = {}) {
 
   // Initialize sub-modules
   initRooms({
-    onRoomSelect: options.onRoomSelect,
+    onRoomSelect: options.onRoomSelect
+  });
+
+  initCreateRoomForm({
     onCreateRoom: options.onCreateRoom
   });
 

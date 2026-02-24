@@ -4,11 +4,11 @@
  * File: frontend/js/handlers/login-handler.js
  */
 
-import { getUsername, setUsername, setJoined, setSocketId } from '../state.js';
+import { getUsername, setUsername, setJoined, setSocketId, getSocketId } from '../state.js';
 import { saveUser } from '../ui/login.js';
 import { joinChat, joinRoom } from '../socket-client.js';
 import { goToChat } from '../router.js';
-import { updateMobileUsername } from '../ui/mobile-nav.js';
+import { updateMobileUsername } from '../ui/mobile/mobile-nav.js';
 import { updateChatHeader } from '../ui/sidebar.js';
 import { updateInputPlaceholder, updateRoomBackground } from '../ui/chat.js';
 
@@ -25,32 +25,31 @@ function handleLoginAttempt(credentials) {
 
 /**
  * Handle user joining the chat (after successful login)
- * @param {string} username - Username
+ * @param {Object} data - Login data containing username, userId, color
  */
-function handleUserJoin(username) {
-  console.log('[App] User joined:', username);
+function handleUserJoin(data) {
+  console.log('[App] User joined:', data);
 
   // Update state
-  setUsername(username);
+  setUsername(data.username);
+  setSocketId(data.userId);
   setJoined(true);
 
   // Update UI with username
   const displayUsername = document.getElementById('display-username');
   if (displayUsername) {
-    displayUsername.textContent = username;
+    displayUsername.textContent = data.username;
   }
 
   // Update mobile header username
   updateMobileUsername();
 
-  // Join the default room
-  joinRoom('general');
-
-  // Update UI
-  updateChatHeader('general', null);
-  updateInputPlaceholder('general', null);
+  // No default room - user must create or select one
+  // Update UI to show "Select a room" state
+  updateChatHeader('Select or create a room', null);
+  updateInputPlaceholder('Create a room to start chatting...', null);
   const container = document.getElementById('messages-container');
-  updateRoomBackground(container, 'general');
+  updateRoomBackground(container, '');
 
   // Navigate to chat route
   goToChat();

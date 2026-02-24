@@ -78,9 +78,9 @@ async function initDataStore() {
     try {
       await fs.access(ROOMS_FILE);
     } catch {
-      // File doesn't exist, create it with default "general" room
-      await fs.writeFile(ROOMS_FILE, JSON.stringify(["general"], null, 2), "utf-8");
-      console.log("Created rooms file with default room");
+      // File doesn't exist, create it empty (no default room)
+      await fs.writeFile(ROOMS_FILE, JSON.stringify([], null, 2), "utf-8");
+      console.log("Created rooms file");
     }
   } catch (error) {
     console.error("Error initializing data store:", error);
@@ -215,15 +215,10 @@ async function loadRooms() {
   try {
     const data = await fs.readFile(ROOMS_FILE, "utf-8");
     const rooms = JSON.parse(data);
-    // Ensure "general" room always exists
-    if (!rooms.includes("general")) {
-      rooms.push("general");
-      await saveRooms(rooms);
-    }
     return rooms;
   } catch (error) {
     console.error("Error loading rooms:", error);
-    return ["general"];
+    return [];
   }
 }
 
@@ -233,11 +228,8 @@ async function loadRooms() {
  */
 async function saveRooms(rooms) {
   try {
-    // Remove duplicates and ensure general exists
+    // Remove duplicates
     const uniqueRooms = [...new Set(rooms)];
-    if (!uniqueRooms.includes("general")) {
-      uniqueRooms.unshift("general");
-    }
     await fs.writeFile(ROOMS_FILE, JSON.stringify(uniqueRooms, null, 2), "utf-8");
     console.log("Rooms saved:", uniqueRooms);
   } catch (error) {

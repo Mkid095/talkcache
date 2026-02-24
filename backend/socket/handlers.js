@@ -192,7 +192,13 @@ async function handleSendMessage(socket, io, data) {
   // Validate input
   if (!data || typeof data !== 'object') return;
 
-  const cleanRoom = (data.room || 'general').trim().substring(0, 50) || 'general';
+  // Room is required - no default
+  if (!data.room || typeof data.room !== 'string') {
+    console.warn('[Server] Message rejected: no room specified');
+    return;
+  }
+
+  const cleanRoom = data.room.trim().substring(0, 50);
   const cleanText = (data.text || '').trim();
 
   const user = connectedUsers.get(socket.id);

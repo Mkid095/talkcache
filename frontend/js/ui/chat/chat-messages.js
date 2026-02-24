@@ -7,10 +7,12 @@
 import { $ } from '../../utils/helpers.js';
 import {
   getFilteredMessages,
-  getSocketId
+  getSocketId,
+  getCurrentRoom
 } from '../../state.js';
 import { escapeHtml, formatTime } from '../../utils/helpers.js';
 import { getUserColor } from './chat-colors.js';
+import { initScrollTracker } from '../../utils/scroll-tracker.js';
 
 // DOM elements
 let elements = {};
@@ -25,6 +27,11 @@ function initElements() {
     messagesList: $('#messages-list'),
     emptyState: $('#empty-state')
   };
+
+  // Initialize scroll tracker for read tracking
+  if (elements.messagesContainer) {
+    initScrollTracker(elements.messagesContainer);
+  }
 }
 
 /**

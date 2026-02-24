@@ -26,8 +26,13 @@ function handleSendMessage(messageText) {
     console.log('[App] Sending private message to:', privateRecipient.id);
     sendPrivateMessage(privateRecipient.id, messageText);
   } else {
-    // Send room message
-    const room = getCurrentRoom() || 'general';
+    // Send room message - only if a room is selected
+    const room = getCurrentRoom();
+    if (!room) {
+      console.warn('[App] No room selected - cannot send message');
+      // Optionally show a toast notification here
+      return;
+    }
     console.log('[App] Sending room message to:', room);
     sendMessage(room, messageText);
   }

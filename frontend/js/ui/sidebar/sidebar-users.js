@@ -9,7 +9,8 @@ import {
   getUsers,
   getSocketId,
   getPrivateRecipient,
-  isMe
+  isMe,
+  getUnreadCount
 } from '../../state.js';
 
 import { getUserColor } from './sidebar-colors.js';
@@ -48,6 +49,7 @@ function renderUsers() {
     const li = document.createElement('li');
     const isCurrentUser = isMe(user);
     const isActive = privateRecipient && privateRecipient.id === user.id;
+    const unreadCount = !isCurrentUser ? getUnreadCount(user.id) : 0;
 
     let userColor = user.color;
     if (!userColor && user.name) {
@@ -69,6 +71,7 @@ function renderUsers() {
         </span>
         <span style="color: ${userColor}; font-weight: 500;">${escapeHtml(user.name)}</span>
         ${isCurrentUser ? ' <span style="color: var(--color-text-light);">(You)</span>' : ''}
+        ${unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : ''}
       </button>
     `;
 

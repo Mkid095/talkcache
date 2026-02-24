@@ -1,0 +1,196 @@
+/**
+ * MOBILE USERS MODAL
+ * Users list modal for mobile devices
+ * File: frontend/css/mobile-users-modal.css
+ */
+
+/* Base modal styles */
+.users-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.users-modal.active {
+  display: flex;
+}
+
+.users-modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Users modal header */
+.users-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.users-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0a4179;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.users-modal-title svg {
+  width: 24px;
+  height: 24px;
+  color: #0a4179;
+}
+
+.users-modal-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #666666;
+  transition: all 0.2s ease;
+}
+
+.users-modal-close:hover {
+  background: #e0e0e0;
+  color: #0a4179;
+}
+
+/* Users modal body */
+.users-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* User list */
+.modal-users-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-user-item {
+  margin-bottom: 8px;
+}
+
+.modal-user-btn {
+  width: 100%;
+  padding: 16px;
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.modal-user-btn:hover:not(:disabled) {
+  border-color: #0a4179;
+  background: #f8fbff;
+}
+
+.modal-user-btn.active {
+  border-color: #0a4179;
+  background: #e8f0fe;
+}
+
+.modal-user-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-user-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  background: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.modal-user-icon-wrapper svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modal-user-info {
+  flex: 1;
+}
+
+.modal-user-name {
+  font-size: 1rem;
+  font-weight: 500;
+  display: block;
+}
+
+.modal-user-badge {
+  font-size: 0.75rem;
+  color: #999999;
+}
+
+/* Unread badge */
+.modal-user-unread-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: #f97316;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .users-modal {
+    display: none !important;
+  }
+}
+
+.modal-user-btn:focus-visible,
+.users-modal-close:focus-visible {
+  outline: 3px solid #5cd387;
+  outline-offset: 2px;
+}

@@ -1,33 +1,21 @@
 /**
- * STATE MANAGEMENT
+ * STATE MANAGEMENT - CORE
  * Stores all the application data in one place
+ * File: frontend/js/state.js
  */
 
-// =============================================
-// APPLICATION STATE
-// All the data our app needs to remember
-// =============================================
-
 const state = {
-  // User information
   username: '',
   socketId: null,
   isJoined: false,
-
-  // Current view
-  currentRoom: 'general',
-  privateRecipient: null,  // Who we're chatting with privately
-
-  // Data from server
+  currentRoom: null,
+  privateRecipient: null,
   messages: [],
   users: [],
-  rooms: ['general']
+  rooms: []
 };
 
-// =============================================
-// GETTER FUNCTIONS - Read data from state
-// =============================================
-
+// Getters
 function getUsername() {
   return state.username;
 }
@@ -64,31 +52,21 @@ function isInPrivateChat() {
   return state.privateRecipient !== null;
 }
 
-/**
- * Get messages for current view (room or private chat)
- * @returns {Array} Filtered messages
- */
 function getFilteredMessages() {
   if (state.privateRecipient) {
-    // Show only private messages between me and the other person
     return state.messages.filter(msg => {
       return msg.isPrivate && (
         (msg.senderId === state.socketId && msg.recipientId === state.privateRecipient.id) ||
         (msg.senderId === state.privateRecipient.id && msg.recipientId === state.socketId)
       );
     });
-  } else {
-    // Show only public messages for current room
-    return state.messages.filter(msg => {
-      return !msg.isPrivate && msg.room === state.currentRoom;
-    });
   }
+  return state.messages.filter(msg => {
+    return !msg.isPrivate && msg.room === state.currentRoom;
+  });
 }
 
-// =============================================
-// SETTER FUNCTIONS - Update state
-// =============================================
-
+// Setters
 function setUsername(username) {
   state.username = username;
 }
@@ -114,8 +92,7 @@ function setPrivateRecipient(recipient) {
 
 function setMessages(messages) {
   state.messages = messages;
-  // Update rooms list from messages
-  const uniqueRooms = new Set(['general']);
+  const uniqueRooms = new Set();
   messages.forEach(msg => {
     if (!msg.isPrivate && msg.room) {
       uniqueRooms.add(msg.room);
@@ -126,7 +103,6 @@ function setMessages(messages) {
 
 function addMessage(message) {
   state.messages.push(message);
-  // Add new room if needed
   if (!message.isPrivate && message.room && !state.rooms.includes(message.room)) {
     state.rooms.push(message.room);
   }
@@ -146,30 +122,32 @@ function addRoom(room) {
   }
 }
 
-// =============================================
-// UTILITY FUNCTIONS
-// =============================================
-
-/**
- * Check if a user is the current user
- * @param {Object|string} user - User object or socket ID
- * @returns {boolean} True if this is me
- */
+// Utility functions
 function isMe(user) {
   const userId = typeof user === 'string' ? user : user?.id;
   return userId === state.socketId;
 }
 
-/**
- * Check if a room exists
- * @param {string} room - Room name
- * @returns {boolean} True if room exists
- */
 function roomExists(room) {
   return state.rooms.includes(room);
 }
 
-// Export all functions
+// Re-export unread functions for backward compatibility
+export {
+  getUnreadCount,
+  getAllUnreadCounts,
+  getTotalUnreadCount,
+  incrementUnread,
+  clearUnread,
+  getRoomUnread,
+  incrementRoomUnread,
+  setRoomUnread,
+  clearRoomUnread,
+  getTotalRoomUnread,
+  clearAllUnread
+} from './state-unread.js';
+
+// Export core functions
 export {
   getUsername,
   getSocketId,
