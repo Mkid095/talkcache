@@ -5,12 +5,20 @@
  */
 
 let socket = null;
+let pendingHandlers = null;
 
 /**
  * Set socket instance (called by socket-connection)
  */
 function setSocketInstance(socketInstance) {
   socket = socketInstance;
+
+  // If there are pending handlers, set them up now
+  if (pendingHandlers) {
+    console.log('[Socket] Setting up pending handlers');
+    setupChatHandlers(pendingHandlers);
+    pendingHandlers = null;
+  }
 }
 
 /**
@@ -35,7 +43,7 @@ function emit(eventName, data) {
     return;
   }
   socket.emit(eventName, data);
-  console.log(`[Socket] Sent: ${eventName}`);
+  console.log(`[Socket] Sent: ${eventName}`, data);
 }
 
 /**
@@ -43,11 +51,18 @@ function emit(eventName, data) {
  * @param {Object} handlers - Callback functions
  */
 function setupChatHandlers(handlers) {
-  if (!socket) return;
+  if (!socket) {
+    // Store handlers for when socket connects
+    console.log('[Socket] Deferring handler setup until socket connects');
+    pendingHandlers = handlers;
+    return;
+  }
+
+  console.log('[Socket] Setting up event handlers');
 
   // Login successful
   socket.on('login_success', (data) => {
-    console.log('[Socket] Login success');
+    console.log('[Socket] Login success:', data);
     if (handlers.onLoginSuccess) handlers.onLoginSuccess(data);
   });
 

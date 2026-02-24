@@ -5,6 +5,41 @@
  */
 
 // =============================================
+// USER COLORS
+// =============================================
+
+const USER_COLORS = [
+  '#e74c3c', // Red
+  '#9b59b6', // Purple
+  '#3498db', // Blue
+  '#1abc9c', // Teal
+  '#2ecc71', // Green
+  '#f39c12', // Orange
+  '#e67e22', // Carrot
+  '#d35400', // Pumpkin
+  '#34495e', // Midnight Blue
+  '#16a085', // Green Sea
+  '#27ae60', // Nephritis
+  '#2980b9', // Belize Hole
+  '#8e44ad', // Wisteria
+  '#c0392b', // Pomegranate
+  '#7f8c8d'  // Gray
+];
+
+/**
+ * Get a consistent color for a user based on their username
+ * @param {string} username - Username
+ * @returns {string} Hex color
+ */
+function getUserColor(username) {
+  let hash = 0;
+  for (let i = 0; i < username.length; i++) {
+    hash = username.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return USER_COLORS[Math.abs(hash) % USER_COLORS.length];
+}
+
+// =============================================
 // ROOM BACKGROUND COLORS
 // =============================================
 
@@ -62,6 +97,8 @@ function updateRoomBackground(container, room, recipient = null) {
 }
 
 export {
+  USER_COLORS,
+  getUserColor,
   ROOM_BG_COLORS,
   getRoomBackground,
   updateRoomBackground

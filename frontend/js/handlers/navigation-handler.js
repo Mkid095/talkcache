@@ -19,15 +19,19 @@ import {
 
 import {
   updateChatHeader,
-  updateInputPlaceholder,
-  updateRoomBackground
-} from '../ui/chat.js';
+  updateActiveRoom
+} from '../ui/sidebar.js';
 
 import {
-  updateActiveRoom,
   renderModalRooms,
   renderModalUsers
-} from '../ui/sidebar.js';
+} from '../ui/mobile-nav.js';
+
+import {
+  updateInputPlaceholder,
+  updateRoomBackground,
+  renderMessages
+} from '../ui/chat.js';
 
 /**
  * Handle room selection
@@ -48,7 +52,6 @@ function handleRoomSelect(room) {
   joinRoom(room);
 
   // Update UI
-  const { renderMessages } = require('../ui/chat.js');
   renderMessages();
   updateChatHeader(room, null);
   updateInputPlaceholder(room, null);
@@ -85,7 +88,6 @@ function handleUserSelect(userId) {
   setPrivateRecipient(selectedUser);
 
   // Update UI
-  const { renderMessages } = require('../ui/chat.js');
   renderMessages();
   updateChatHeader(null, selectedUser);
   updateInputPlaceholder(null, selectedUser);

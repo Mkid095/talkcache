@@ -75,6 +75,5 @@ export {
   addMessage,
   scrollToBottom,
   updateInputPlaceholder,
-  updateRoomBackground,
-  onSendMessage
+  updateRoomBackground
 };

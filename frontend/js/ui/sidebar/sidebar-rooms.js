@@ -4,7 +4,7 @@
  * File: frontend/js/ui/sidebar/sidebar-rooms.js
  */
 
-import { $, $$, delegate, escapeHtml } from '../../utils/helpers.js';
+import { $, $$, on, delegate, escapeHtml } from '../../utils/helpers.js';
 import {
   getRooms,
   getCurrentRoom,
@@ -189,7 +189,6 @@ function initRooms(options = {}) {
   if (options.onCreateRoom) onCreateRoom(options.onCreateRoom);
 
   if (elements.createRoomForm && options.onCreateRoom) {
-    const { on } = require('../../utils/helpers.js');
     on(elements.createRoomForm, 'submit', handleCreateRoom(options.onCreateRoom));
   }
 

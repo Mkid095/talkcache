@@ -68,7 +68,10 @@ async function startServer() {
     sendUsersList(socket);
 
     // Register event handlers
-    socket.on("join", (username) => handleJoin(socket, io, username));
+    socket.on("join", (credentials) => {
+      console.log(`[Server] Received join event:`, credentials);
+      handleJoin(socket, io, credentials);
+    });
     socket.on("join_room", (room) => handleJoinRoom(socket, room));
     socket.on("send_message", (data) => handleSendMessage(socket, io, data));
     socket.on("send_private_message", (data) => handlePrivateMessage(socket, io, data));

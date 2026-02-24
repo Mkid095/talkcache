@@ -4,6 +4,8 @@
  * File: frontend/js/socket/socket-connection.js
  */
 
+import { setSocketInstance } from './socket-events.js';
+
 let socket = null;
 
 /**
@@ -23,7 +25,6 @@ function initSocket() {
 
     // Notify socket-events module of connection
     if (socket.id) {
-      const { setSocketInstance } = require('./socket-events.js');
       setSocketInstance(socket);
     }
   });

@@ -6,12 +6,11 @@
 
 import { getUsername, setUsername, setJoined, setSocketId } from '../state.js';
 import { saveUser } from '../ui/login.js';
-import {
-  joinChat,
-  goToChat
-} from '../socket-client.js';
+import { joinChat, joinRoom } from '../socket-client.js';
+import { goToChat } from '../router.js';
 import { updateMobileUsername } from '../ui/mobile-nav.js';
-import { updateChatHeader, updateInputPlaceholder, updateRoomBackground } from '../ui/chat.js';
+import { updateChatHeader } from '../ui/sidebar.js';
+import { updateInputPlaceholder, updateRoomBackground } from '../ui/chat.js';
 
 /**
  * Handle login attempt with credentials
@@ -45,13 +44,13 @@ function handleUserJoin(username) {
   updateMobileUsername();
 
   // Join the default room
-  const { joinRoom } = require('../socket-client.js');
   joinRoom('general');
 
   // Update UI
   updateChatHeader('general', null);
   updateInputPlaceholder('general', null);
-  updateRoomBackground('general');
+  const container = document.getElementById('messages-container');
+  updateRoomBackground(container, 'general');
 
   // Navigate to chat route
   goToChat();

@@ -19,12 +19,16 @@ import {
 // Import socket client
 import {
   initSocket,
-  setupChatHandlers
+  setupChatHandlers,
+  disconnect,
+  createRoom
 } from './socket-client.js';
 
 // Import login UI
 import {
-  initLogin
+  initLogin,
+  saveUser,
+  clearSavedUser
 } from './ui/login.js';
 
 // Import sidebar
@@ -157,11 +161,9 @@ function handleLogout() {
   console.log('[App] Logging out...');
 
   // Clear saved credentials
-  const { clearSavedUser } = require('./ui/login.js');
   clearSavedUser();
 
   // Disconnect from server
-  const { disconnect } = require('./socket-client.js');
   disconnect();
 
   // Navigate to login route
@@ -183,7 +185,6 @@ function setupSocketHandlers() {
       handleUserJoin(data.username);
 
       // Save to localStorage
-      const { saveUser } = require('./ui/login.js');
       saveUser(data.username);
     },
 
@@ -269,7 +270,6 @@ function handleCreateRoom(roomName) {
   console.log('Creating room:', roomName);
 
   // Send to server to persist
-  const { createRoom } = require('./socket-client.js');
   createRoom(roomName);
 
   // Note: We don't update UI here - we wait for the server
@@ -289,6 +289,5 @@ if (document.readyState === 'loading') {
 
 // Clean up on page unload
 window.addEventListener('beforeunload', () => {
-  const { disconnect } = require('./socket-client.js');
   disconnect();
 });
