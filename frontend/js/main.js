@@ -11,6 +11,7 @@ import { handleLoginAttempt } from './handlers/login-handler.js';
 import { initializeUI } from './app-ui.js';
 import { setupSocketHandlers } from './app-socket-handlers.js';
 import { renderMessages } from './ui/chat.js';
+import { clearAllUnread } from './state.js';
 import { resetState } from './state.js';
 
 // App state
@@ -51,10 +52,10 @@ function initApp() {
 function handleLogout() {
   console.log('[App] Logging out...');
 
-  // Reset all state to initial values
-  resetState();
+  // Clear session unread counts (messages, users, rooms persist for next login)
+  clearAllUnread();
 
-  // Clear saved credentials
+  // Clear saved credentials from localStorage
   clearSavedUser();
 
   // Disconnect from server

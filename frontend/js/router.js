@@ -12,7 +12,7 @@ import {
   setUsername
 } from './state.js';
 
-import { getSavedUser } from './ui/login.js';
+import { getSavedUser, clearSavedUser } from './ui/login.js';
 
 // DOM elements
 let elements = {};
