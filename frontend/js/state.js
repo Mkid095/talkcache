@@ -55,10 +55,13 @@ function isInPrivateChat() {
 function getFilteredMessages() {
   if (state.privateRecipient) {
     return state.messages.filter(msg => {
-      return msg.isPrivate && (
-        (msg.senderId === state.socketId && msg.recipientId === state.privateRecipient.id) ||
-        (msg.senderId === state.privateRecipient.id && msg.recipientId === state.socketId)
-      );
+      if (!msg.isPrivate) return false;
+      // Match messages between me and the recipient using usernames
+      const iSentIt = msg.senderName === state.username;
+      const theySentIt = msg.senderName === state.privateRecipient.name;
+
+      // Show if I sent it OR they sent it
+      return iSentIt || theySentIt;
     });
   }
   return state.messages.filter(msg => {

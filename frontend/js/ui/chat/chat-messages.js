@@ -8,6 +8,7 @@ import { $ } from '../../utils/helpers.js';
 import {
   getFilteredMessages,
   getSocketId,
+  getUsername,
   getCurrentRoom
 } from '../../state.js';
 import { escapeHtml, formatTime } from '../../utils/helpers.js';
@@ -54,13 +55,14 @@ function renderMessages() {
     }
   }
 
-  let previousSenderId = null;
+  let previousSenderName = null;
 
   messages.forEach((msg) => {
-    const showName = previousSenderId !== msg.senderId;
+    // Use senderName instead of senderId for grouping messages
+    const showName = previousSenderName !== msg.senderName;
     const messageElement = createMessageElement(msg, showName);
     list.appendChild(messageElement);
-    previousSenderId = msg.senderId;
+    previousSenderName = msg.senderName;
   });
 
   scrollToBottom();
@@ -73,7 +75,9 @@ function renderMessages() {
  * @returns {HTMLElement} Message element
  */
 function createMessageElement(message, showName = true) {
-  const isMe = message.senderId === getSocketId();
+  // Use username instead of socketId to determine if I sent this message
+  // socketId changes every session, but username stays the same
+  const isMe = message.senderName === getUsername();
   const isPrivate = message.isPrivate || false;
   const container = document.createElement('div');
 
@@ -131,12 +135,13 @@ function addMessage(message) {
   let showName = true;
 
   if (lastMessage) {
-    const lastSenderId = lastMessage.dataset.senderId;
-    showName = lastSenderId !== message.senderId;
+    const lastSenderName = lastMessage.dataset.senderName || '';
+    showName = lastSenderName !== message.senderName;
   }
 
   const messageElement = createMessageElement(message, showName);
-  messageElement.dataset.senderId = message.senderId;
+  messageElement.dataset.senderId = message.senderId;  // Keep for now, but we use senderName for grouping
+  messageElement.dataset.senderName = message.senderName;  // Add this for proper grouping
   list.appendChild(messageElement);
 
   if (autoScroll) {
