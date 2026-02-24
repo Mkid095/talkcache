@@ -5,6 +5,7 @@
  */
 
 import { getUsername, setUsername, setJoined, setSocketId, getSocketId, setCurrentRoom, getCurrentRoom, addRoom } from '../state.js';
+import { saveUser } from '../ui/login.js';
 import { joinChat, joinRoom } from '../socket-client.js';
 import { goToChat } from '../router.js';
 import { updateMobileUsername } from '../ui/mobile/mobile-nav.js';
@@ -15,6 +16,9 @@ import { updateMobileUsername } from '../ui/mobile/mobile-nav.js';
  */
 function handleLoginAttempt(credentials) {
   console.log('[App] Login attempt:', credentials.username);
+
+  // Save credentials for auto-login BEFORE sending to server
+  saveUser(credentials.username, credentials.password);
 
   // Send credentials to server for verification
   joinChat(credentials);

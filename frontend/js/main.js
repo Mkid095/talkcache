@@ -29,8 +29,13 @@ function initApp() {
   // Connect to server
   socket = initSocket();
 
-  // Initialize router (no auto-login)
-  initRouter();
+  // Initialize router with auto-login support
+  initRouter({
+    onAutoLogin: (credentials) => {
+      console.log('[Router] Auto-login for:', credentials.username);
+      handleLoginAttempt(credentials);
+    }
+  });
 
   // Set up the UI
   initializeUI(handleCreateRoom, handleLogout);
