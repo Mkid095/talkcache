@@ -95,7 +95,8 @@ function setPrivateRecipient(recipient) {
 
 function setMessages(messages) {
   state.messages = messages;
-  const uniqueRooms = new Set();
+  // Add rooms from messages to existing rooms, don't replace
+  const uniqueRooms = new Set(state.rooms);
   messages.forEach(msg => {
     if (!msg.isPrivate && msg.room) {
       uniqueRooms.add(msg.room);
