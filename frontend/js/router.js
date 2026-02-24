@@ -65,8 +65,7 @@ function updateScreen() {
 
 /**
  * Initialize the router
- * @param {Object} options - Configuration options
- *   - onAutoLogin: Callback when auto-login is needed
+ * @param {Object} options - Configuration options (unused - auto-login removed)
  */
 function initRouter(options = {}) {
   initElements();
@@ -87,41 +86,15 @@ function initRouter(options = {}) {
     updateScreen();
   });
 
-  // Check for saved credentials BEFORE anything else
+  // Clear any saved credentials to ensure fresh login each time
   const savedUser = getSavedUser();
-
-  if (savedUser && savedUser.username && savedUser.password) {
-    console.log('[Router] Found saved credentials:', savedUser.username);
-
-    // Restore state from saved credentials FIRST
-    setJoined(true);
-    setUsername(savedUser.username);
-
-    // If on login route, navigate to chat
-    if (currentRoute === ROUTES.LOGIN) {
-      navigate(ROUTES.CHAT);
-    } else {
-      // Already on chat route, just update screen
-      updateScreen();
-    }
-
-    // Trigger auto-login callback to reconnect with server
-    // This should happen AFTER the UI is showing chat
-    if (options.onAutoLogin) {
-      // Small delay to ensure UI is ready
-      setTimeout(() => {
-        options.onAutoLogin(savedUser);
-      }, 50);
-    }
-  } else {
-    console.log('[Router] No saved credentials found');
-    // No saved credentials - ensure login screen is shown
-    if (currentRoute === ROUTES.CHAT) {
-      navigate(ROUTES.LOGIN);
-    } else {
-      updateScreen();
-    }
+  if (savedUser) {
+    console.log('[Router] Clearing saved credentials');
+    clearSavedUser();
   }
+
+  // Always show login screen if not logged in
+  updateScreen();
 }
 
 /**

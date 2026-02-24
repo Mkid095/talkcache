@@ -86,7 +86,6 @@ function setupChatHandlers(handlers) {
 
   // New message received
   socket.on('receive_message', (message) => {
-    console.log('[Socket] New message');
     if (handlers.onReceiveMessage) handlers.onReceiveMessage(message);
   });
 

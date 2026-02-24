@@ -17,7 +17,7 @@ function initSocket() {
     autoConnect: true,
     reconnection: true,
     reconnectionDelay: 1000,
-    reconnectionAttempts: 5
+    reconnectionAttempts: Infinity
   });
 
   console.log('[Socket] Connecting...');
@@ -75,6 +75,8 @@ function ensureConnected() {
 
   if (!socket.connected) {
     console.log('[Socket] Reconnecting socket...');
+    // Ensure reconnection is enabled (in case it was disabled after logout)
+    socket.io.opts.reconnection = true;
     socket.connect();
   }
 
@@ -86,7 +88,9 @@ function ensureConnected() {
  */
 function disconnect() {
   if (socket) {
+    // Disconnect and prevent auto-reconnect
     socket.disconnect();
+    socket.io.opts.reconnection = false;
     socket = null;
   }
   setSocketInstance(null);

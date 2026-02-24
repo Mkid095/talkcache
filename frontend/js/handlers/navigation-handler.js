@@ -32,6 +32,7 @@ import {
   renderModalRooms,
   renderModalUsers,
   updateUsersBadge,
+  updateRoomsBadge,
   addModalRoomToList
 } from '../ui/mobile/mobile-nav.js';
 
@@ -76,6 +77,7 @@ function handleRoomSelect(room) {
   updateActiveRoom(room);
   renderRooms();
   renderModalRooms();
+  updateRoomsBadge();
 }
 
 /**

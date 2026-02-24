@@ -153,29 +153,8 @@ function initLogin(onJoin) {
     on(elements.passwordInput, 'input', updateJoinButtonState);
   }
 
-  // Check for saved user and auto-fill
-  const savedUser = getSavedUser();
-  if (savedUser && savedUser.username && savedUser.password) {
-    if (elements.usernameInput) {
-      elements.usernameInput.value = savedUser.username;
-    }
-    if (elements.passwordInput) {
-      elements.passwordInput.value = savedUser.password;
-    }
-    updateJoinButtonState();
-    return { autoLogin: true, credentials: savedUser };
-  } else if (savedUser && savedUser.username) {
-    if (elements.usernameInput) {
-      elements.usernameInput.value = savedUser.username;
-    }
-    updateJoinButtonState();
-    elements.passwordInput?.focus();
-  } else {
-    elements.usernameInput?.focus();
-  }
-
-  updateJoinButtonState();
-  return { autoLogin: false };
+  // Always focus on username input (no auto-fill)
+  elements.usernameInput?.focus();
 
   console.log('[Login] Ready');
 }

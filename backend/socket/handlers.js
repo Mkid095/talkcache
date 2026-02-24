@@ -170,16 +170,8 @@ function handleJoinRoom(socket, room) {
   const cleanRoom = room.trim();
   if (!cleanRoom || cleanRoom.length > 50) return;
 
-  // Leave other rooms
-  socket.rooms.forEach((r) => {
-    if (r !== socket.id) {
-      socket.leave(r);
-    }
-  });
-
-  // Join new room
+  // Join room (for future use - we currently broadcast to all users)
   socket.join(cleanRoom);
-  console.log(`User ${socket.id} joined room: ${cleanRoom}`);
 }
 
 /**
@@ -210,9 +202,10 @@ async function handleSendMessage(socket, io, data) {
   // Save to file
   await saveMessage(message);
 
-  // Send to room
-  io.to(message.room).emit("receive_message", message);
-  console.log(`Message in ${message.room} from ${user.name}`);
+  // Broadcast to ALL connected users (client will filter by room)
+  // This ensures real-time delivery even when users switch rooms
+  io.emit("receive_message", message);
+  console.log(`[Server] Message from ${user.name} in room "${cleanRoom}": ${cleanText}`);
 }
 
 /**

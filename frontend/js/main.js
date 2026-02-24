@@ -11,6 +11,7 @@ import { handleLoginAttempt } from './handlers/login-handler.js';
 import { initializeUI } from './app-ui.js';
 import { setupSocketHandlers } from './app-socket-handlers.js';
 import { renderMessages } from './ui/chat.js';
+import { clearAllUnread } from './state.js';
 
 // App state
 let socket = null;
@@ -28,13 +29,8 @@ function initApp() {
   // Connect to server
   socket = initSocket();
 
-  // Initialize router
-  initRouter({
-    onAutoLogin: (credentials) => {
-      console.log('[Router] Auto-login for:', credentials.username);
-      handleLoginAttempt(credentials);
-    }
-  });
+  // Initialize router (no auto-login)
+  initRouter();
 
   // Set up the UI
   initializeUI(handleCreateRoom, handleLogout);
@@ -54,6 +50,9 @@ function initApp() {
  */
 function handleLogout() {
   console.log('[App] Logging out...');
+
+  // Clear all unread counts
+  clearAllUnread();
 
   // Clear saved credentials
   clearSavedUser();

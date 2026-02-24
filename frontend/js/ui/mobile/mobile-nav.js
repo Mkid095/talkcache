@@ -5,7 +5,7 @@
  */
 
 import { $, on } from '../../utils/helpers.js';
-import { getUsername, getTotalUnreadCount } from '../../state.js';
+import { getUsername, getTotalUnreadCount, getTotalRoomUnread } from '../../state.js';
 import {
   renderModalRooms,
   addModalRoomToList,
@@ -98,6 +98,25 @@ function updateUsersBadge() {
   }
 }
 
+function updateRoomsBadge() {
+  const totalUnread = getTotalRoomUnread();
+  const roomsBtn = elements.mobileRoomsBtn;
+
+  if (!roomsBtn) return;
+
+  const existingBadge = roomsBtn.querySelector('.nav-btn-badge');
+  if (existingBadge) {
+    existingBadge.remove();
+  }
+
+  if (totalUnread > 0) {
+    const badge = document.createElement('span');
+    badge.className = 'nav-btn-badge nav-btn-badge-center';
+    badge.textContent = totalUnread > 99 ? '99+' : totalUnread;
+    roomsBtn.appendChild(badge);
+  }
+}
+
 // Initialization
 function initMobileNav(options = {}) {
   initElements();
@@ -162,5 +181,6 @@ export {
   openUsersModal,
   closeAllModals,
   updateMobileUsername,
-  updateUsersBadge
+  updateUsersBadge,
+  updateRoomsBadge
 };

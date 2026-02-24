@@ -32,12 +32,9 @@ import {
 import {
   renderModalRooms,
   renderModalUsers,
-  updateUsersBadge
+  updateUsersBadge,
+  updateRoomsBadge
 } from './ui/mobile/mobile-nav.js';
-
-import {
-  saveUser
-} from './ui/login.js';
 
 import {
   handleUserJoin
@@ -60,7 +57,6 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
     onLoginSuccess: (data) => {
       console.log('[App] Login successful:', data);
       handleUserJoin(data);
-      saveUser(data.username);
     },
 
     // Login failed
@@ -105,22 +101,12 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
 
     // New message received
     onReceiveMessage: (message) => {
+      // Always save message to state (for persistence)
       addMessage(message);
 
       const privateRecipient = getPrivateRecipient();
       const currentRoom = getCurrentRoom();
       const mySocketId = getSocketId();
-
-      // Debug logging for private messages
-      if (message.isPrivate) {
-        console.log('[App] Private message received:', {
-          senderId: message.senderId,
-          recipientId: message.recipientId,
-          mySocketId: mySocketId,
-          currentRecipient: privateRecipient?.id,
-          text: message.text
-        });
-      }
 
       // Display if: room message matches current room, OR
       // private message is from/to the current private chat recipient
@@ -130,8 +116,6 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
             privateRecipient.id === message.recipientId   // Message to recipient (sent by me)
           ))
         : (message.room === currentRoom);
-
-      console.log('[App] Should display message?', shouldDisplay);
 
       if (shouldDisplay) {
         addMessageToChat(message);
@@ -153,6 +137,7 @@ export function setupSocketHandlers(setupChatHandlers, goToLogin) {
           incrementRoomUnread(message.room);
           renderRooms();
           renderModalRooms();
+          updateRoomsBadge();
         }
 
         const rooms = document.querySelectorAll('.room-btn');
