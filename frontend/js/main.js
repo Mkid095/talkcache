@@ -12,7 +12,6 @@ import { initializeUI } from './app-ui.js';
 import { setupSocketHandlers } from './app-socket-handlers.js';
 import { renderMessages } from './ui/chat.js';
 import { clearAllUnread } from './state.js';
-import { resetState } from './state.js';
 
 // App state
 let socket = null;
