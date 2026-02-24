@@ -5,7 +5,6 @@
  */
 
 import { getUsername, setUsername, setJoined, setSocketId, getSocketId, setCurrentRoom, getCurrentRoom, addRoom } from '../state.js';
-import { saveUser } from '../ui/login.js';
 import { joinChat, joinRoom } from '../socket-client.js';
 import { goToChat } from '../router.js';
 import { updateMobileUsername } from '../ui/mobile/mobile-nav.js';

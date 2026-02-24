@@ -47,13 +47,16 @@ function updateScreen() {
   initElements();
 
   const isLoggedIn = hasJoined();
-  const savedUser = getSavedUser();
-  const hasCredentials = savedUser && savedUser.username;
+  const shouldShowChat = isLoggedIn || currentRoute === ROUTES.CHAT;
 
-  const shouldShowChat = (isLoggedIn && hasCredentials) || (currentRoute === ROUTES.CHAT && hasCredentials);
+  console.log('[Router] updateScreen:', {
+    isLoggedIn,
+    currentRoute,
+    shouldShowChat
+  });
 
   if (elements.loginScreen && elements.chatInterface) {
-    if (shouldShowChat && hasCredentials) {
+    if (shouldShowChat) {
       elements.loginScreen.classList.add('hidden');
       elements.chatInterface.classList.remove('hidden');
     } else {
@@ -102,6 +105,7 @@ function initRouter(options = {}) {
  * @param {string} route - Route to navigate to
  */
 function navigate(route) {
+  console.log('[Router] Navigating to:', route);
   currentRoute = route;
 
   // Update URL without reloading
