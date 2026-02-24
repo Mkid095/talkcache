@@ -22,6 +22,11 @@ function initElements() {
   elements = {
     roomsList: $('#rooms-list')
   };
+
+  console.log('[SidebarRooms] initElements:', {
+    roomsList: elements.roomsList,
+    found: !!elements.roomsList
+  });
 }
 
 /**
@@ -32,7 +37,16 @@ function renderRooms(currentRoom = getCurrentRoom()) {
   const rooms = getRooms();
   const list = elements.roomsList;
 
-  if (!list) return;
+  console.log('[SidebarRooms] renderRooms called:', {
+    rooms,
+    roomsList: list,
+    hasRoomsList: !!list
+  });
+
+  if (!list) {
+    console.warn('[SidebarRooms] #rooms-list element not found!');
+    return;
+  }
 
   list.innerHTML = '';
 

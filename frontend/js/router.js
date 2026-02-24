@@ -52,16 +52,20 @@ function updateScreen() {
   console.log('[Router] updateScreen:', {
     isLoggedIn,
     currentRoute,
-    shouldShowChat
+    shouldShowChat,
+    loginScreenFound: !!elements.loginScreen,
+    chatInterfaceFound: !!elements.chatInterface
   });
 
   if (elements.loginScreen && elements.chatInterface) {
     if (shouldShowChat) {
       elements.loginScreen.classList.add('hidden');
       elements.chatInterface.classList.remove('hidden');
+      console.log('[Router] Showing chat interface');
     } else {
       elements.loginScreen.classList.remove('hidden');
       elements.chatInterface.classList.add('hidden');
+      console.log('[Router] Showing login screen');
     }
   }
 }
